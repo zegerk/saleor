@@ -23,10 +23,9 @@ class BaseTranslateMutation(ModelMutation):
 
     @classmethod
     def perform_mutation(cls, root, info, **data):
-        errors = []
         model_type = registry.get_type_for_model(cls._meta.model)
         instance = cls.get_node_or_error(
-            info, data['id'], errors, 'id', model_type)
+            info, data['id'], only_type=model_type)
         instance.translations.update_or_create(
             language_code=data['language_code'], defaults=data['input'])
         return cls(**{cls._meta.return_field_name: instance})

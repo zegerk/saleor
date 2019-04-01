@@ -46,15 +46,12 @@ class ShopSettingsUpdate(BaseMutation):
 
     @classmethod
     def perform_mutation(cls, root, info, input):
-        errors = []
         instance = info.context.site.settings
-
         for field_name, desired_value in input.items():
             current_value = getattr(instance, field_name)
             if current_value != desired_value:
                 setattr(instance, field_name, desired_value)
-        cls.clean_instance(instance, errors)
-
+        cls.clean_instance(instance)
         instance.save()
         return ShopSettingsUpdate(shop=Shop())
 
@@ -74,7 +71,6 @@ class ShopDomainUpdate(BaseMutation):
 
     @classmethod
     def perform_mutation(cls, root, info, input):
-        errors = []
         site = info.context.site
         domain = input.get('domain')
         name = input.get('name')
@@ -82,7 +78,7 @@ class ShopDomainUpdate(BaseMutation):
             site.domain = domain
         if name is not None:
             site.name = name
-        cls.clean_instance(site, errors)
+        cls.clean_instance(site)
         site.save()
         return ShopDomainUpdate(shop=Shop())
 
@@ -99,7 +95,6 @@ class ShopFetchTaxRates(BaseMutation):
 
     @classmethod
     def perform_mutation(cls, root, info):
-        errors = []
         if settings.VATLAYER_ACCESS_KEY:
             call_command('get_vat_rates')
         else:
@@ -125,12 +120,11 @@ class HomepageCollectionUpdate(BaseMutation):
 
     @classmethod
     def perform_mutation(cls, root, info, collection=None):
-        errors = []
         new_collection = cls.get_node_or_error(
-            info, collection, errors, 'collection', Collection)
+            info, collection, field='collection', only_type=Collection)
         site_settings = info.context.site.settings
         site_settings.homepage_collection = new_collection
-        cls.clean_instance(site_settings, errors)
+        cls.clean_instance(site_settings)
         site_settings.save(update_fields=['homepage_collection'])
         return HomepageCollectionUpdate(shop=Shop())
 
@@ -163,7 +157,6 @@ class AuthorizationKeyAdd(BaseMutation):
 
     @classmethod
     def perform_mutation(cls, root, info, key_type, input):
-        errors = []
         if site_models.AuthorizationKey.objects.filter(name=key_type).exists():
             raise ValidationError({
                 'key_type': 'Authorization key already exists.'})
@@ -171,7 +164,7 @@ class AuthorizationKeyAdd(BaseMutation):
         site_settings = info.context.site.settings
         instance = site_models.AuthorizationKey(
             name=key_type, site_settings=site_settings, **input)
-        cls.clean_instance(instance, errors)
+        cls.clean_instance(instance)
         instance.save()
         return AuthorizationKeyAdd(authorization_key=instance, shop=Shop())
 

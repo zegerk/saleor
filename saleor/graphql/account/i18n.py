@@ -26,5 +26,5 @@ class I18nMixin:
             instance = Address()
 
         cls.construct_instance(instance, address_data)
-        cls.clean_instance(instance, [])
+        cls.clean_instance(instance)
         return instance
