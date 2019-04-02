@@ -58,4 +58,4 @@ Use `pycodestyle <http://pycodestyle.pycqa.org/en/latest/>`_ to make sure your c
 
 Use `pydocstyle <http://pydocstyle.pycqa.org/en/latest/>`_ to check that your docstrings are properly formatted.
 
-``python -m pip install -r requirements_dev.txt`` can install these tools. For Pipenv users, they can also be installed by ``pipenv install --dev``.
+``python -m pip install -r requirements_dev.txt`` can install these tools. For Poetry users, they can also be installed by ``poetry install``.
