@@ -219,3 +219,13 @@ export function getUserInitials(user?: User) {
       ).toUpperCase()
     : undefined;
 }
+
+interface AnyEvent {
+  stopPropagation: () => void;
+}
+export function stopPropagation(cb: () => void) {
+  return (event: AnyEvent) => {
+    event.stopPropagation();
+    cb();
+  };
+}
