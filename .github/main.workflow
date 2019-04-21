@@ -1,6 +1,6 @@
 workflow "New workflow" {
   on = "push"
-  resolves = ["NyanKiyoshi/actions-diff@master"]
+  resolves = ["Check GraphQL Schema Is Up to Date"]
 }
 
 action "Install dependencies" {
