@@ -11,5 +11,5 @@ action "Install dependencies" {
 action "Check GraphQL Schema Is Up to Date" {
   uses = "NyanKiyoshi/actions-diff@master"
   needs = ["Install dependencies"]
-  args = "saleor/graphql/schema.graphql python manage.py get_graphql_schema"
+  args = "saleor/graphql/schema.graphql SECRET_KEY=abc python manage.py get_graphql_schema"
 }
