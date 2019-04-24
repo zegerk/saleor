@@ -72,6 +72,7 @@ function loadStories() {
   require("./stories/home/HomePage");
 
   // Navigation
+  require("./stories/navigation/MenuCreateDialog");
   require("./stories/navigation/MenuListPage");
 
   // Staff
